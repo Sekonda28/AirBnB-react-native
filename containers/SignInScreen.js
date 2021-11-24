@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     //marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
+    backgroundColor:"#fff"
   },
   pageContainer: {
     marginLeft: 30,
