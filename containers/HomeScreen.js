@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Image,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
@@ -23,11 +24,16 @@ export default function HomeScreen() {
         "https://express-airbnb-api.herokuapp.com/rooms"
       );
       setRoomsData(response.data);
-      console.log(response.data[0].photos[0].url);
     } catch (error) {
       console.log(error.message);
     }
   }, []);
+
+  const handlePress=(roomId)=>{
+    navigation.navigate("Room",{
+      id:roomId
+    })
+  }
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -49,7 +55,7 @@ export default function HomeScreen() {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
             return (
-              <View style={styles.flatviewContainer}>
+              <TouchableOpacity style={styles.flatviewContainer} onPress={()=>handlePress(item._id)}>
                 <Image
                   style={styles.roomImage}
                   source={{ uri: item.photos[0].url }}
@@ -70,7 +76,7 @@ export default function HomeScreen() {
                     <Image style = {styles.userImage} source={{uri: item.user.account.photo.url}} resizeMode="contain"/>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             );
           }}
         />
