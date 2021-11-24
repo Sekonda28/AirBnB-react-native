@@ -100,7 +100,8 @@ export default function SignUpScreen({ setToken }) {
               <View style={styles.inputBorderDesc}>
                 <TextInput
                   style={styles.inputDesc}
-                  numberOfLines={4}
+                  numberOfLines={Platform.OS === "ios"? null:4}
+                  minHeight = {Platform.OS === "ios"? 60 : null}
                   placeholder="Describe yourself in a few words"
                   onChangeText={(text) => {
                     setDescription(text);
