@@ -20,6 +20,7 @@ export default function SignInScreen({ setToken }) {
   const [password, setPassword] = useState("");
   const [pWordHidden, setPWordHidden] = useState(true);
   const [animating, setAnimating] = useState(false)
+  const [error, setError] = useState("")
   const navigation = useNavigation();
 
   const handlePress = async () => {
@@ -37,13 +38,13 @@ export default function SignInScreen({ setToken }) {
         
         setToken(response.data.token);
       } else {
-        Alert.alert("Please enter an email and a password");
+        setError("Please enter an email and a password");
        
       } setAnimating(false)
     } catch (error) {
       console.log(error.message);
       {
-        Alert.alert("Username or password incorrect");
+        setError("Username or password not found");
         setAnimating(false)
       }
     }
@@ -92,6 +93,7 @@ export default function SignInScreen({ setToken }) {
             </Text>
           </View>
      <View>
+     <Text style ={{color: "#FF5A5F", marginTop: 5, textAlign: "center"}}>{error}</Text>
         <ActivityIndicator size="large" color="#FF5A5F" animating = {animating}/></View> 
           <TouchableOpacity style={styles.button} onPress={handlePress} disabled={animating}>
             <Text style={styles.buttonText}>Sign in</Text>

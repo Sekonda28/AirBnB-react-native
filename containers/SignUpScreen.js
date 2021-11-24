@@ -8,7 +8,8 @@ import {
   TextInput,
   View,
   Image,
-  SafeAreaView, Platform
+  SafeAreaView,
+  Platform,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Constants from "expo-constants";
@@ -24,9 +25,10 @@ export default function SignUpScreen({ setToken }) {
   const [pWordHidden, setPWordHidden] = useState(true);
   const [confirmPWHidden, setConfirmPWHidden] = useState(true);
   const [animating, setAnimating] = useState(false);
+  const [error, setError] = useState("");
   console.log(email, password, description, confirmPW, username);
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const handlePress = async () => {
     try {
@@ -53,19 +55,16 @@ export default function SignUpScreen({ setToken }) {
           setToken(response.data.token);
           console.log(response.data);
         } else {
-          Alert.alert("Your passwords do not match - please try again");
+          setError("Your passwords do not match - please try again");
         }
       } else {
-        Alert.alert("Please make sure all the fields are filled in");
+        setError("Please make sure all the fields are filled in");
       }
       setAnimating(false);
     } catch (error) {
       console.log(error.message);
+      setError(error.response.data.error);
       setAnimating(false);
-
-      {
-        Alert.alert("Error - please try again");
-      }
     }
   };
 
@@ -140,12 +139,19 @@ export default function SignUpScreen({ setToken }) {
               </View>
             </View>
             <View>
+              <Text
+                style={{ color: "#FF5A5F", marginTop: 5, textAlign: "center" }}
+              >
+                {error}
+              </Text>
+
               <ActivityIndicator
                 size="large"
                 color="#FF5A5F"
                 animating={animating}
               />
             </View>
+
             <TouchableOpacity
               style={styles.button}
               onPress={handlePress}
