@@ -3,25 +3,29 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
 import {
   StyleSheet,
-  Button,
+  ActivityIndicator,
   Text,
   TextInput,
   View,
   TouchableOpacity,
   Alert,
   Image,
+  SafeAreaView, Platform
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Constants from "expo-constants";
 
 export default function SignInScreen({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pWordHidden, setPWordHidden] = useState(true);
+  const [animating, setAnimating] = useState(false)
   const navigation = useNavigation();
 
   const handlePress = async () => {
-    try {
+    try { setAnimating(true)
       if (password !== "" || email !== "") {
+       
         const response = await axios.post(
           "https://express-airbnb-api.herokuapp.com/user/log_in",
           {
@@ -30,21 +34,28 @@ export default function SignInScreen({ setToken }) {
           }
         );
         //setUserId(response.data.username);
+        
         setToken(response.data.token);
       } else {
         Alert.alert("Please enter an email and a password");
-      }
+       
+      } setAnimating(false)
     } catch (error) {
       console.log(error.message);
       {
         Alert.alert("Username or password incorrect");
+        setAnimating(false)
       }
     }
   };
   return (
-    <KeyboardAwareScrollView>
+   <KeyboardAwareScrollView><SafeAreaView style = {styles.safeAreaView}>
+    
       <View>
         <View style={styles.pageContainer}>
+   
+
+        
           <View style={styles.headerContainer}>
             <Image
               style={styles.logo}
@@ -80,8 +91,9 @@ export default function SignInScreen({ setToken }) {
               👁
             </Text>
           </View>
-
-          <TouchableOpacity style={styles.button} onPress={handlePress}>
+     <View>
+        <ActivityIndicator size="large" color="#FF5A5F" animating = {animating}/></View> 
+          <TouchableOpacity style={styles.button} onPress={handlePress} disabled={animating}>
             <Text style={styles.buttonText}>Sign in</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -92,12 +104,17 @@ export default function SignInScreen({ setToken }) {
             <Text style={styles.accountText}>No account ? Register</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </View></SafeAreaView>
     </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+
+  safeAreaView: {
+    flex: 1,
+    //marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
+  },
   pageContainer: {
     marginLeft: 30,
     marginRight: 30,

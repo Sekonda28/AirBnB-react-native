@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
+  ActivityIndicator,
   Alert,
   TouchableOpacity,
   Text,
   TextInput,
   View,
   Image,
+  SafeAreaView, Platform
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Constants from "expo-constants";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/core";
 
 export default function SignUpScreen({ setToken }) {
   const [email, setEmail] = useState("");
@@ -19,10 +23,14 @@ export default function SignUpScreen({ setToken }) {
   const [confirmPW, setConfirmPW] = useState("");
   const [pWordHidden, setPWordHidden] = useState(true);
   const [confirmPWHidden, setConfirmPWHidden] = useState(true);
+  const [animating, setAnimating] = useState(false);
   console.log(email, password, description, confirmPW, username);
+
+  const navigation = useNavigation()
 
   const handlePress = async () => {
     try {
+      setAnimating(true);
       if (
         password !== "" ||
         email !== "" ||
@@ -41,6 +49,7 @@ export default function SignUpScreen({ setToken }) {
             }
           );
           //setUserId(response.data.username);
+
           setToken(response.data.token);
           console.log(response.data);
         } else {
@@ -49,8 +58,11 @@ export default function SignUpScreen({ setToken }) {
       } else {
         Alert.alert("Please make sure all the fields are filled in");
       }
+      setAnimating(false);
     } catch (error) {
       console.log(error.message);
+      setAnimating(false);
+
       {
         Alert.alert("Error - please try again");
       }
@@ -58,93 +70,110 @@ export default function SignUpScreen({ setToken }) {
   };
 
   return (
-    <KeyboardAwareScrollView>
-      <View>
-        <View style={styles.pageContainer}>
-          <View style={styles.headerContainer}>
-            <Image
-              style={styles.logo}
-              source={require("../assets/airbnb-logo.png")}
-              resizeMode="contain"
-            />
-            <Text style={styles.headerText}>Sign In</Text>
-          </View>
+    <SafeAreaView style={styles.safeAreaView}>
+      <KeyboardAwareScrollView>
+        <View>
+          <View style={styles.pageContainer}>
+            <View style={styles.headerContainer}>
+              <Image
+                style={styles.logo}
+                source={require("../assets/airbnb-logo.png")}
+                resizeMode="contain"
+              />
+              <Text style={styles.headerText}>Sign In</Text>
+            </View>
 
-          <View>
-            <View style={styles.inputBorder}>
-              <TextInput
-                style={styles.inputLine}
-                placeholder="email"
-                onChangeText={(text) => setEmail(text)}
+            <View>
+              <View style={styles.inputBorder}>
+                <TextInput
+                  style={styles.inputLine}
+                  placeholder="email"
+                  onChangeText={(text) => setEmail(text)}
+                />
+              </View>
+              <View style={styles.inputBorder}>
+                <TextInput
+                  style={styles.inputLine}
+                  placeholder="username"
+                  onChangeText={(text) => setUsername(text)}
+                />
+              </View>
+              <View style={styles.inputBorderDesc}>
+                <TextInput
+                  style={styles.inputDesc}
+                  numberOfLines={4}
+                  placeholder="Describe yourself in a few words"
+                  onChangeText={(text) => {
+                    setDescription(text);
+                  }}
+                />
+              </View>
+              <View style={styles.inputBorder}>
+                <TextInput
+                  style={styles.inputLine}
+                  placeholder="password"
+                  secureTextEntry={pWordHidden}
+                  onChangeText={(text) => setPassword(text)}
+                />
+                <Text
+                  onPress={() => {
+                    setPWordHidden(!pWordHidden);
+                  }}
+                >
+                  👁
+                </Text>
+              </View>
+              <View style={styles.inputBorder}>
+                <TextInput
+                  style={styles.inputLine}
+                  placeholder="confirm password"
+                  secureTextEntry={confirmPWHidden}
+                  onChangeText={(text) => setConfirmPW(text)}
+                />
+                <Text
+                  onPress={() => {
+                    setConfirmPWHidden(!confirmPWHidden);
+                  }}
+                >
+                  👁
+                </Text>
+              </View>
+            </View>
+            <View>
+              <ActivityIndicator
+                size="large"
+                color="#FF5A5F"
+                animating={animating}
               />
             </View>
-            <View style={styles.inputBorder}>
-              <TextInput
-                style={styles.inputLine}
-                placeholder="username"
-                onChangeText={(text) => setUsername(text)}
-              />
-            </View>
-            <View style={styles.inputBorderDesc}>
-              <TextInput
-                style={styles.inputDesc}
-                numberOfLines={4}
-                placeholder="Describe yourself in a few words"
-                onChangeText={(text) => {
-                  setDescription(text);
-                }}
-              />
-            </View>
-            <View style={styles.inputBorder}>
-              <TextInput
-                style={styles.inputLine}
-                placeholder="password"
-                secureTextEntry={pWordHidden}
-                onChangeText={(text) => setPassword(text)}
-              />
-              <Text
-                onPress={() => {
-                  setPWordHidden(!pWordHidden);
-                }}
-              >
-                👁
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handlePress}
+              disabled={animating}
+            >
+              <Text style={styles.buttonText}>Sign up</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("SignIn");
+              }}
+            >
+              <Text style={styles.accountText}>
+                Already have an account ? Sign in
               </Text>
-            </View>
-            <View style={styles.inputBorder}>
-              <TextInput
-                style={styles.inputLine}
-                placeholder="confirm password"
-                secureTextEntry={confirmPWHidden}
-                onChangeText={(text) => setConfirmPW(text)}
-              />
-              <Text
-                onPress={() => {
-                  setConfirmPWHidden(!confirmPWHidden);
-                }}
-              >
-                👁
-              </Text>
-            </View>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.button} onPress={handlePress}>
-            <Text style={styles.buttonText}>Sign up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("SignIn");
-            }}
-          >
-            <Text style={styles.accountText}>
-              Already have an account ? Sign in
-            </Text>
-          </TouchableOpacity>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    //marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
+  },
   pageContainer: {
     marginLeft: 30,
     marginRight: 30,
@@ -194,7 +223,7 @@ const styles = StyleSheet.create({
     borderColor: "#FF5A5F",
     alignItems: "center",
     borderRadius: 20,
-    marginTop: 60,
+    marginTop: 30,
   },
   buttonText: {
     color: "#767676",
