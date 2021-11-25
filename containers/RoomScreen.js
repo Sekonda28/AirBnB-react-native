@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/core";
+import MapView from "react-native-maps";
 import Constants from "expo-constants";
-import { Dimensions } from 'react-native';
+import { Dimensions } from "react-native";
 import {
   Text,
   View,
@@ -48,30 +49,28 @@ export default function RoomScreen() {
           />
         </View>
 
-       
-          <View style={styles.flatviewContainer}>
-            <View>
-              <SwiperFlatList
-                autoplay
-                autoplayDelay={4}
-                autoplayLoop
-                index={0}
-                showPagination
-                paginationStyle={{ bottom: 0 }}
-                paginationStyleItem={{ width: 12, height: 12 }}
-                paginationDefaultColor="#767676"
-                data={roomData.photos}
-                renderItem={({ item }) => (
-                  
-                    <Image
-                      style={styles.roomImage}
-                      source={{ uri: item.url }}
-                    ></Image>
-                )}
-              />
-            </View>
-            <Text style={styles.price}>{roomData.price} €</Text>
-            <View style={styles.mainContainer}>
+        <View style={styles.flatviewContainer}>
+          <View>
+            <SwiperFlatList
+              autoplay
+              autoplayDelay={4}
+              autoplayLoop
+              index={0}
+              showPagination
+              paginationStyle={{ bottom: 0 }}
+              paginationStyleItem={{ width: 12, height: 12 }}
+              paginationDefaultColor="#767676"
+              data={roomData.photos}
+              renderItem={({ item }) => (
+                <Image
+                  style={styles.roomImage}
+                  source={{ uri: item.url }}
+                ></Image>
+              )}
+            />
+          </View>
+          <Text style={styles.price}>{roomData.price} €</Text>
+          <View style={styles.mainContainer}>
             <View style={styles.roomsDescContainer}>
               <View style={styles.textContainer}>
                 <Text style={styles.title} numberOfLines={1}>
@@ -118,7 +117,26 @@ export default function RoomScreen() {
                 />
               </View>
             </TouchableOpacity>
-          </View></View></View>
+          </View>
+        </View>
+      </View>
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          longitude: roomData.location[0],
+          latitude: roomData.location[1],
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        }}
+      >
+        <MapView.Marker
+          coordinate={{
+            latitude: roomData.location[1],
+            longitude: roomData.location[0],
+          }}
+          title={roomData.title}
+        />
+      </MapView>
     </SafeAreaView>
   );
 }
@@ -132,7 +150,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     marginLeft: 30,
     marginRight: 30,
-    marginBottom: 40,
+    marginBottom: 10,
   },
 
   headerContainer: {
@@ -209,5 +227,9 @@ const styles = StyleSheet.create({
   showMoreTxt: {
     color: "#767676",
     marginRight: 5,
+  },
+  map: {
+    width: width,
+    height: 280,
   },
 });
