@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/core";
 import Constants from "expo-constants";
-import { Text, View, Image, StyleSheet, SafeAreaView } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
 import { Rating } from "react-native-ratings";
-import { Dimensions } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import {SwiperFlatList} from 'react-native-swiper-flatlist'
 
 export default function RoomScreen() {
   const { params } = useRoute();
   const [roomData, setRoomData] = useState();
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
+  const [showLines, setShowLines] = useState(3);
   const roomId = params.id;
   useEffect(async () => {
     try {
@@ -17,58 +26,85 @@ export default function RoomScreen() {
         `https://express-airbnb-api.herokuapp.com/rooms/${roomId}`
       );
       setRoomData(response.data);
-      setIsLoading(false)
+      setIsLoading(false);
       console.log(response.data.photos[0].url);
-      console.log(roomData)
+      console.log(roomData);
     } catch (error) {
       console.log(error.message);
     }
   }, []);
 
-  return ( isLoading?<Text>Page Loading...</Text>:
-    <SafeAreaView style={styles.safeAreaView}><View style={styles.pageContainer}>
-          <View style={styles.headerContainer}>
-            <Image
-              style={styles.logo}
-              source={require("../assets/airbnb-logo.png")}
-              resizeMode="contain"
-            />
-          </View>
-        
-      <View style={styles.mainContainer}>
-        <View style={styles.flatviewContainer}>
+  return isLoading ? (
+    <Text>Page Loading...</Text>
+  ) : (
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.pageContainer}>
+        <View style={styles.headerContainer}>
           <Image
-            style={styles.roomImage}
-            source={{ uri: roomData.photos[0].url }}
-          ></Image>
-          <Text style={styles.price}>{roomData.price} €</Text>
-          <View style={styles.roomsDescContainer}>
-            <View style={styles.textContainer}>
-              <Text style={styles.title} numberOfLines={1}>
-                {roomData.title}
-              </Text>
-              <View style={styles.ratingsContainer}>
-                <Rating
-                  type="custom"
-                  startingValue={roomData.ratingValue}
-                  readonly={true}
-                  imageSize={20}
-                />
+            style={styles.logo}
+            source={require("../assets/airbnb-logo.png")}
+            resizeMode="contain"
+          />
+        </View>
 
-                <Text style={styles.review}>{roomData.reviews} reviews</Text>
+        <View style={styles.mainContainer}>
+          <View style={styles.flatviewContainer}>
+            <Image
+              style={styles.roomImage}
+              source={{ uri: roomData.photos[0].url }}
+              
+            ></Image>
+            <Text style={styles.price}>{roomData.price} €</Text>
+            <View style={styles.roomsDescContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.title} numberOfLines={1}>
+                  {roomData.title}
+                </Text>
+                <View style={styles.ratingsContainer}>
+                  <Rating
+                    type="custom"
+                    startingValue={roomData.ratingValue}
+                    readonly={true}
+                    imageSize={20}
+                  />
+
+                  <Text style={styles.review}>{roomData.reviews} reviews</Text>
+                </View>
+              </View>
+              <View style={styles.userImageContainer}>
+                <Image
+                  style={styles.userImage}
+                  source={{ uri: roomData.user.account.photo.url }}
+                  resizeMode="contain"
+                />
               </View>
             </View>
-            <View style={styles.userImageContainer}>
-              <Image
-                style={styles.userImage}
-                source={{ uri: roomData.user.account.photo.url }}
-                resizeMode="contain"
-              />
-            </View>
+            <Text numberOfLines={showLines}>{roomData.description}</Text>
+            <TouchableOpacity
+              style={styles.showMore}
+              onPress={() => {
+                showLines === 3 ? setShowLines(0) : setShowLines(3);
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: showLines === 3 ? "center" : "flex-end",
+                }}
+              >
+                <Text style={styles.showMoreTxt}>
+                  {showLines === 3 ? "Show more" : "Show less"}
+                </Text>
+                <AntDesign
+                  name={showLines === 3 ? "caretdown" : "caretup"}
+                  size={14}
+                  color="#767676"
+                />
+              </View>
+            </TouchableOpacity>
           </View>
-          <Text numberOfLines={3}>{roomData.description}</Text>
         </View>
-      </View></View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -122,7 +158,6 @@ const styles = StyleSheet.create({
   roomsDescContainer: {
     flexDirection: "row",
     paddingVertical: 10,
-
   },
 
   textContainer: {
@@ -152,5 +187,12 @@ const styles = StyleSheet.create({
   review: {
     color: "#767676",
     marginLeft: 10,
+  },
+  showMore: {
+    paddingTop: 10,
+  },
+  showMoreTxt: {
+    color: "#767676",
+    marginRight: 5,
   },
 });
