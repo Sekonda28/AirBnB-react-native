@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   Image,
   FlatList,
-  TouchableOpacity,
+  TouchableOpacity, Platform
 } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";

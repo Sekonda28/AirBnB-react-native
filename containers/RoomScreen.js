@@ -8,11 +8,12 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import axios from "axios";
 import { Rating } from "react-native-ratings";
 import { AntDesign } from "@expo/vector-icons";
-import {SwiperFlatList} from 'react-native-swiper-flatlist'
+import { SwiperFlatList } from "react-native-swiper-flatlist";
 
 export default function RoomScreen() {
   const { params } = useRoute();
@@ -27,8 +28,6 @@ export default function RoomScreen() {
       );
       setRoomData(response.data);
       setIsLoading(false);
-      console.log(response.data.photos[0].url);
-      console.log(roomData);
     } catch (error) {
       console.log(error.message);
     }
@@ -49,11 +48,27 @@ export default function RoomScreen() {
 
         <View style={styles.mainContainer}>
           <View style={styles.flatviewContainer}>
-            <Image
-              style={styles.roomImage}
-              source={{ uri: roomData.photos[0].url }}
-              
-            ></Image>
+            <View>
+              <SwiperFlatList
+                autoplay
+                autoplayDelay={4}
+                autoplayLoop
+                index={0}
+                showPagination
+                paginationStyle={{ bottom: 0 }}
+                paginationStyleItem={{ width: 12, height: 12 }}
+                paginationDefaultColor="#767676"
+                data={roomData.photos}
+                renderItem={({ item }) => (
+                  <View>
+                    <Image
+                      style={styles.roomImage}
+                      source={{ uri: item.url }}
+                    ></Image>
+                  </View>
+                )}
+              />
+            </View>
             <Text style={styles.price}>{roomData.price} €</Text>
             <View style={styles.roomsDescContainer}>
               <View style={styles.textContainer}>
@@ -75,7 +90,6 @@ export default function RoomScreen() {
                 <Image
                   style={styles.userImage}
                   source={{ uri: roomData.user.account.photo.url }}
-                  resizeMode="contain"
                 />
               </View>
             </View>
@@ -140,7 +154,7 @@ const styles = StyleSheet.create({
   },
 
   roomImage: {
-    width: 330,
+    width: 430,
     height: 230,
     position: "relative",
   },
