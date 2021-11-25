@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/core";
 import Constants from "expo-constants";
+import { Dimensions } from 'react-native';
 import {
   Text,
   View,
@@ -14,6 +15,7 @@ import axios from "axios";
 import { Rating } from "react-native-ratings";
 import { AntDesign } from "@expo/vector-icons";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
+const width = Dimensions.get("window").width;
 
 export default function RoomScreen() {
   const { params } = useRoute();
@@ -46,7 +48,7 @@ export default function RoomScreen() {
           />
         </View>
 
-        <View style={styles.mainContainer}>
+       
           <View style={styles.flatviewContainer}>
             <View>
               <SwiperFlatList
@@ -60,16 +62,16 @@ export default function RoomScreen() {
                 paginationDefaultColor="#767676"
                 data={roomData.photos}
                 renderItem={({ item }) => (
-                  <View>
+                  
                     <Image
                       style={styles.roomImage}
                       source={{ uri: item.url }}
                     ></Image>
-                  </View>
                 )}
               />
             </View>
             <Text style={styles.price}>{roomData.price} €</Text>
+            <View style={styles.mainContainer}>
             <View style={styles.roomsDescContainer}>
               <View style={styles.textContainer}>
                 <Text style={styles.title} numberOfLines={1}>
@@ -116,9 +118,7 @@ export default function RoomScreen() {
                 />
               </View>
             </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+          </View></View></View>
     </SafeAreaView>
   );
 }
@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
   },
 
   headerContainer: {
+    marginTop: 10,
     height: 60,
     justifyContent: "center",
     alignItems: "center",
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
   },
 
   roomImage: {
-    width: 430,
+    width: width,
     height: 230,
     position: "relative",
   },

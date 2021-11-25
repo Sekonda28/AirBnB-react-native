@@ -9,7 +9,8 @@ import {
   SafeAreaView,
   Image,
   FlatList,
-  TouchableOpacity, Platform
+  TouchableOpacity,
+  Platform,
 } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
@@ -29,11 +30,11 @@ export default function HomeScreen() {
     }
   }, []);
 
-  const handlePress=(roomId)=>{
-    navigation.navigate("Room",{
-      id:roomId
-    })
-  }
+  const handlePress = (roomId) => {
+    navigation.navigate("Room", {
+      id: roomId,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -55,25 +56,37 @@ export default function HomeScreen() {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity style={styles.flatviewContainer} onPress={()=>handlePress(item._id)}>
+              <TouchableOpacity
+                style={styles.flatviewContainer}
+                onPress={() => handlePress(item._id)}
+              >
                 <Image
                   style={styles.roomImage}
                   source={{ uri: item.photos[0].url }}
                 ></Image>
                 <Text style={styles.price}>{item.price} €</Text>
-                <View style = {styles.roomsDescContainer}>
-                  <View style = {styles.textContainer}>
+                <View style={styles.roomsDescContainer}>
+                  <View style={styles.textContainer}>
                     <Text style={styles.title} numberOfLines={1}>
                       {item.title}
                     </Text>
-                    <View style ={styles.ratingsContainer}>
-                    <Rating  type="custom" startingValue={item.ratingValue} readonly={true} imageSize={20}/>
-            
-                    <Text style = {styles.review}>{item.reviews} reviews</Text></View>
-              
+                    <View style={styles.ratingsContainer}>
+                      <Rating
+                        type="custom"
+                        startingValue={item.ratingValue}
+                        readonly={true}
+                        imageSize={20}
+                      />
+
+                      <Text style={styles.review}>{item.reviews} reviews</Text>
+                    </View>
                   </View>
                   <View style={styles.userImageContainer}>
-                    <Image style = {styles.userImage} source={{uri: item.user.account.photo.url}} resizeMode="contain"/>
+                    <Image
+                      style={styles.userImage}
+                      source={{ uri: item.user.account.photo.url }}
+                      resizeMode="contain"
+                    />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -96,15 +109,16 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
-    backgroundColor:"#fff"
+    backgroundColor: "#fff",
   },
   mainContainer: {
     marginLeft: 30,
     marginRight: 30,
-    marginBottom: 40
+    marginBottom: 40,
   },
 
   headerContainer: {
+    marginTop: 10,
     height: 60,
     justifyContent: "center",
     alignItems: "center",
@@ -117,10 +131,10 @@ const styles = StyleSheet.create({
   },
 
   // Flatview Return
-flatviewContainer:{
-  paddingBottom: 10,
-  paddingTop: 10
-},
+  flatviewContainer: {
+    paddingBottom: 10,
+    paddingTop: 10,
+  },
 
   roomImage: {
     width: 430,
@@ -138,40 +152,39 @@ flatviewContainer:{
     paddingVertical: 10,
   },
 
-  roomsDescContainer:{
+  roomsDescContainer: {
     flexDirection: "row",
-    paddingVertical:10,
+    paddingVertical: 10,
     borderBottomColor: "#767676",
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
 
-  textContainer:{
-    flex: 3
+  textContainer: {
+    flex: 3,
   },
 
-  userImageContainer:{
-    flex: 1
+  userImageContainer: {
+    flex: 1,
   },
   title: {
     fontSize: 20,
-    marginRight: 5
+    marginRight: 5,
   },
 
-  userImage:{
+  userImage: {
     height: 80,
     width: 80,
-    borderRadius: 50
+    borderRadius: 50,
   },
-  ratingsContainer:{
+  ratingsContainer: {
     flexDirection: "row",
-    marginTop: 10
-    
+    marginTop: 10,
   },
-  rating:{
-    backgroundColor: "green"
+  rating: {
+    backgroundColor: "green",
   },
   review: {
     color: "#767676",
-    marginLeft: 10
-  }
+    marginLeft: 10,
+  },
 });
