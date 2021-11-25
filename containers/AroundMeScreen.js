@@ -88,6 +88,8 @@ export default function AroundMeScreen() {
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         }}
+        coordinate={coords}
+        showsUserLocation
       >
 
           {locationData.map((location, index)=>{
