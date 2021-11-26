@@ -10,7 +10,7 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  Platform,
+  Platform, ActivityIndicator
 } from "react-native";
 import axios from "axios";
 import { Rating } from "react-native-ratings";
@@ -37,7 +37,7 @@ export default function RoomScreen() {
   }, []);
 
   return isLoading ? (
-    <Text>Page Loading...</Text>
+    <ActivityIndicator size="large" color="#FF5A5F" />
   ) : (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.pageContainer}>

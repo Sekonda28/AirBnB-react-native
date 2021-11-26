@@ -18,6 +18,7 @@ import axios from "axios";
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [roomsData, setRoomsData] = useState();
+  
 
   useEffect(async () => {
     try {

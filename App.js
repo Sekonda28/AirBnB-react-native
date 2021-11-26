@@ -131,9 +131,15 @@ export default function App() {
                         options={{
                           title: "Around Me", headerShown: false
                         }}
-                      >
-                        {() => <AroundMeScreen />}
-                      </Stack.Screen>
+                        component = {AroundMeScreen}
+                      />
+                      <Stack.Screen
+                        name="RoomTab"
+                        options={{
+                          title: "Room",headerShown: false,
+                        }}
+                        component={RoomScreen}
+                      />
                     </Stack.Navigator>)}
                 </Tab.Screen>
                 <Tab.Screen
