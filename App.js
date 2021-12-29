@@ -59,10 +59,10 @@ export default function App() {
         {userToken === null ? (
           // No token found, user isn't signed in
           <>
-            <Stack.Screen name="SignIn">
+            <Stack.Screen name="Sign In">
               {() => <SignInScreen setToken={setToken} />}
             </Stack.Screen>
-            <Stack.Screen name="SignUp">
+            <Stack.Screen name="Sign Up">
               {() => <SignUpScreen setToken={setToken} />}
             </Stack.Screen>
           </>
@@ -119,7 +119,7 @@ export default function App() {
                 </Tab.Screen>
                 <Tab.Screen name = "AroundMe"
                 options = {{
-                  tabBarLabel:"Around me",
+                  tabBarLabel:"Around Me",
                   tabBarIcon:({color, size})=>(
                     <EvilIcons name="location" size={size} color={color} />
                   ),
@@ -145,10 +145,11 @@ export default function App() {
                 <Tab.Screen
                   name="TabSettings"
                   options={{
-                    tabBarLabel: "Settings",
+                    tabBarLabel: "My Profile",
                     tabBarIcon: ({ color, size }) => (
+                     
                       <Ionicons
-                        name={"ios-options"}
+                        name={"person-outline"}
                         size={size}
                         color={color}
                       />
@@ -160,7 +161,7 @@ export default function App() {
                       <Stack.Screen
                         name="Settings"
                         options={{
-                          title: "Settings",
+                          title: "My Profile",
                         }}
                       >
                         {() => <SettingsScreen setToken={setToken} />}
