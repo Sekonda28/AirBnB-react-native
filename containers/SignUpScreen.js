@@ -15,7 +15,7 @@ import Constants from "expo-constants";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
 
-export default function SignUpScreen({ setToken }) {
+export default function SignUpScreen({ setToken, setId }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
@@ -49,10 +49,10 @@ export default function SignUpScreen({ setToken }) {
               description: description,
             }
           );
-          //setUserId(response.data.username);
+          setId(response.data.id);
 
           setToken(response.data.token);
-          console.log(response.data);
+         
         } else {
           setError("Your passwords do not match - please try again");
         }
