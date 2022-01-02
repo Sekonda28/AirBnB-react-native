@@ -117,7 +117,7 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name = "AroundMe"
+                <Tab.Screen name = "Around Me"
                 options = {{
                   tabBarLabel:"Around me",
                   tabBarIcon:({color, size})=>(
