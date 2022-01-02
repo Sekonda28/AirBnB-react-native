@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function SettingsScreen({ setToken, setId }) {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(async () => {
@@ -21,7 +21,6 @@ export default function SettingsScreen({ setToken, setId }) {
       );
       setUserData(response.data);
       console.log(response.data);
-      console.log(userData);
       setIsLoading(false);}
       
 
@@ -38,16 +37,16 @@ export default function SettingsScreen({ setToken, setId }) {
       <Text>Hello Settings</Text>
       <View style={styles.userImageContainer}>
         
-        {/* <Image
+        <Image
           style={styles.userImage}
           source={{ uri: userData.photo.url }}
           resizeMode="contain"
-        /> */}
+        />
       </View>
 
-      {/* <Text>{userData.email}</Text>
+      <Text>{userData.email}</Text>
       <Text>{userData.username}</Text>
-      <Text>{userData.description}</Text> */}
+      <Text>{userData.description}</Text>
       <Button title="Update" />
       <Button
         title="Log Out"
