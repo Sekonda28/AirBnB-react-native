@@ -15,7 +15,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Constants from "expo-constants";
 
-export default function SignInScreen({ setToken }) {
+export default function SignInScreen({ setToken, setId }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pWordHidden, setPWordHidden] = useState(true);
@@ -34,9 +34,11 @@ export default function SignInScreen({ setToken }) {
             password: password,
           }
         );
-        //setUserId(response.data.username);
-        
+       
+        console.log("Sign in screen", response.data)
+         setId(response.data.id);
         setToken(response.data.token);
+        
       } else {
         setError("Please enter an email and a password");
        

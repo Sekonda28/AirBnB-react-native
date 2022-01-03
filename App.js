@@ -17,9 +17,12 @@ import AroundMeScreen from "./containers/AroundMeScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState(null)
+  
 
 
   const setToken = async (token) => {
@@ -32,16 +35,26 @@ export default function App() {
     setUserToken(token);
   };
 
+  const setId = async (id) => {
+    if (id) {
+      await AsyncStorage.setItem("userId", id);
+    } else {
+      await AsyncStorage.removeItem("userId");
+    }
+
+    setUserId(id);
+  };
+
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
-
+      const userId = await AsyncStorage.getItem("userId");
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       setUserToken(userToken);
-
+      setUserId(userId)
       setIsLoading(false);
     };
 
@@ -56,14 +69,14 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {userToken === null ? (
+        {userToken === null || userId === null ? (
           // No token found, user isn't signed in
           <>
-            <Stack.Screen name="SignIn">
-              {() => <SignInScreen setToken={setToken} />}
+            <Stack.Screen name="Sign In">
+              {() => <SignInScreen setToken={setToken} setId={setId} />}
             </Stack.Screen>
-            <Stack.Screen name="SignUp">
-              {() => <SignUpScreen setToken={setToken} />}
+            <Stack.Screen name="Sign Up">
+              {() => <SignUpScreen setToken={setToken} setId={setId} />}
             </Stack.Screen>
           </>
         ) : (
@@ -119,7 +132,7 @@ export default function App() {
                 </Tab.Screen>
                 <Tab.Screen name = "Around Me"
                 options = {{
-                  tabBarLabel:"Around me",
+                  tabBarLabel:"Around Me",
                   tabBarIcon:({color, size})=>(
                     <EvilIcons name="location" size={size} color={color} />
                   ),
@@ -147,6 +160,7 @@ export default function App() {
                   options={{
                     tabBarLabel: "Settings",
                     tabBarIcon: ({ color, size }) => (
+                     
                       <Ionicons
                         name={"ios-options"}
                         size={size}
@@ -163,7 +177,7 @@ export default function App() {
                           title: "Settings",
                         }}
                       >
-                        {() => <SettingsScreen setToken={setToken} />}
+                        {() => <SettingsScreen setToken={setToken} setId={setId}/>}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
