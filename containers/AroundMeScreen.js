@@ -20,8 +20,8 @@ const height = Dimensions.get("window").height;
 export default function AroundMeScreen() {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [coords, setCoords] = useState(null);
-  const [locationData, setLocationData] = useState(null);
+  const [coords, setCoords] = useState({});
+  const [locationData, setLocationData] = useState({});
 
   const navigation = useNavigation();
 
@@ -51,14 +51,17 @@ export default function AroundMeScreen() {
 
           setLocationData(response.data);
           // console.log(locationData);
+          setIsLoading(false);
+          
         } catch (error) {
           console.log(error.message);
         }
       } else {
         setError(true);
+        setIsLoading(false);
       }
 
-      setIsLoading(false);
+      
     };
 
     askPermission();
