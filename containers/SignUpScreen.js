@@ -78,7 +78,7 @@ export default function SignUpScreen({ setToken, setId }) {
                 source={require("../assets/airbnb-logo.png")}
                 resizeMode="contain"
               />
-              <Text style={styles.headerText}>Sign In</Text>
+              <Text style={styles.headerText}>Sign Up</Text>
             </View>
 
             <View>
@@ -161,7 +161,7 @@ export default function SignUpScreen({ setToken, setId }) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("SignIn");
+                navigation.navigate("Sign In");
               }}
             >
               <Text style={styles.accountText}>
