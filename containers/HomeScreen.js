@@ -10,7 +10,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  Platform,
+  Platform, ActivityIndicator
 } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
@@ -18,6 +18,7 @@ import axios from "axios";
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [roomsData, setRoomsData] = useState();
+  const [isLoading, setIsLoading] = useState(true)
   
 
   useEffect(async () => {
@@ -26,6 +27,7 @@ export default function HomeScreen() {
         "https://express-airbnb-api.herokuapp.com/rooms"
       );
       setRoomsData(response.data);
+      setIsLoading(false)
     } catch (error) {
       console.log(error.message);
     }
@@ -37,7 +39,9 @@ export default function HomeScreen() {
     });
   };
 
-  return (
+  return isLoading?   ( <View>
+  <ActivityIndicator size="large" color="#FF5A5F"/>
+</View>) : (
     <SafeAreaView style={styles.safeAreaView}>
       <View>
         <View style={styles.pageContainer}>

@@ -30,8 +30,9 @@ export default function SettingsScreen({ setToken, setId }) {
   },[]);
 
 
-  return userData===null ? (
-    <ActivityIndicator size="large" color="#FF5A5F" />
+  return isLoading ? (
+    <View><ActivityIndicator size="large" color="#FF5A5F" /></View>
+    
   ) :(
     <View>
       <Text>Hello Settings</Text>
