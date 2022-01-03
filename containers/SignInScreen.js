@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
+
 import {
   StyleSheet,
   ActivityIndicator,
@@ -102,7 +103,7 @@ export default function SignInScreen({ setToken, setId }) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("SignUp");
+              navigation.navigate("Sign Up");
             }}
           >
             <Text style={styles.accountText}>No account ? Register</Text>
