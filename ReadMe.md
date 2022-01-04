@@ -1,6 +1,6 @@
 <h1 align="center">AirBnB Mobile Application</h1>
 
-<p align="center">This project is a mobile application created with React Native replicating some of the functionality of AirBnB with the key features including:
+<p>This project is a mobile application created with React Native replicating some of the functionality of AirBnB with the key features including:
 <ul>
 <li>Sign in and sign up options using local storage to save user details</li>
 <li>Mapping of AirBnB rooms data using Google Maps to show the relative location</li>
